@@ -2,117 +2,362 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro de Repuestos</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro de Movimientos de Bodega</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Flatpickr -->
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+  <!-- FilePond para fotos -->
+  <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet"/>
   <style>
-    body { background: #eef5f9; }
-    h1 { color: #0d6efd; }
-    .form-section { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    #preview img { max-width: 100%; max-height: 150px; margin-top: 10px; }
+    body {
+      background: linear-gradient(120deg, #1766b3, #63b5f6 90%);
+      min-height: 100vh;
+      color: #222;
+    }
+    .card {
+      border-radius: 2rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.11);
+      margin-top: 3rem;
+    }
+    .nav-pills .nav-link.active {
+      background: #1976d2;
+      color: #fff;
+    }
+    .filepond--root {
+      border-radius: 1rem;
+    }
+    .btn-main {
+      background: #1976d2;
+      color: #fff;
+      font-weight: bold;
+    }
+    .btn-main:hover {
+      background: #125197;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
-<div class="container py-4">
-  <h1 class="text-center mb-4">Formulario de Bodega</h1>
-
-  <div class="form-section">
-    <form id="formulario">
-      <div class="mb-3">
-        <label class="form-label">Técnico</label>
-        <input type="text" class="form-control" name="tecnico" required />
+<div class="container">
+  <div class="card p-4">
+    <h2 class="mb-4 text-center fw-bold">Registro de Movimientos de Bodega</h2>
+    <ul class="nav nav-pills mb-3 justify-content-center" id="sectionTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="salida-tab" data-bs-toggle="pill" data-bs-target="#salida" type="button" role="tab">Salida de equipos</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="entrada-tab" data-bs-toggle="pill" data-bs-target="#entrada" type="button" role="tab">Entrada de equipos</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="otro-tab" data-bs-toggle="pill" data-bs-target="#otro" type="button" role="tab">Otro Motivo</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="sectionContent">
+      <!-- Salida -->
+      <div class="tab-pane fade show active" id="salida" role="tabpanel">
+        <form id="formSalida" class="needs-validation" novalidate>
+          <input type="hidden" name="tipo" value="Salida">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Técnico</label>
+              <input type="text" class="form-control" name="tecnico" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tipo de movimiento</label>
+              <select class="form-select" name="tipo_movimiento" required>
+                <option value="Salida">Salida</option>
+                <option value="Entrada">Entrada</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Hora de entrada</label>
+              <input type="text" class="form-control datetime" name="hora_entrada" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Código retirado</label>
+              <input type="text" class="form-control" name="codigo_retirado" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Serie retirada</label>
+              <input type="text" class="form-control" name="serie_retirada" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Descripción</label>
+              <input type="text" class="form-control" name="descripcion" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">ID de sitio</label>
+              <input type="text" class="form-control" name="id_sitio" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Nombre de sitio</label>
+              <input type="text" class="form-control" name="nombre_sitio" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de parte</label>
+              <input type="file" class="filepond" name="foto_parte" accept="image/*" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de serie</label>
+              <input type="file" class="filepond" name="foto_serie" accept="image/*" required>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Comentario</label>
+              <textarea class="form-control" name="comentario" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-main">Registrar y Generar PDF</button>
+            <span id="loadingSalida" class="ms-2" style="display:none;">Enviando...</span>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Motivo</label>
-        <select class="form-select" name="motivo" required>
-          <option value="">Seleccione...</option>
-          <option value="Ingreso">Ingreso</option>
-          <option value="Salida">Salida</option>
-          <option value="Otro">Otro</option>
-        </select>
+      <!-- Entrada -->
+      <div class="tab-pane fade" id="entrada" role="tabpanel">
+        <form id="formEntrada" class="needs-validation" novalidate>
+          <input type="hidden" name="tipo" value="Entrada">
+          <!-- Mismos campos que Salida -->
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Técnico</label>
+              <input type="text" class="form-control" name="tecnico" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tipo de movimiento</label>
+              <select class="form-select" name="tipo_movimiento" required>
+                <option value="Salida">Salida</option>
+                <option value="Entrada">Entrada</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Hora de entrada</label>
+              <input type="text" class="form-control datetime" name="hora_entrada" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Código retirado</label>
+              <input type="text" class="form-control" name="codigo_retirado" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Serie retirada</label>
+              <input type="text" class="form-control" name="serie_retirada" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Descripción</label>
+              <input type="text" class="form-control" name="descripcion" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">ID de sitio</label>
+              <input type="text" class="form-control" name="id_sitio" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Nombre de sitio</label>
+              <input type="text" class="form-control" name="nombre_sitio" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de parte</label>
+              <input type="file" class="filepond" name="foto_parte" accept="image/*" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de serie</label>
+              <input type="file" class="filepond" name="foto_serie" accept="image/*" required>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Comentario</label>
+              <textarea class="form-control" name="comentario" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-main">Registrar y Generar PDF</button>
+            <span id="loadingEntrada" class="ms-2" style="display:none;">Enviando...</span>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Nombre del repuesto</label>
-        <input type="text" class="form-control" name="repuesto" required />
+      <!-- Otro Motivo -->
+      <div class="tab-pane fade" id="otro" role="tabpanel">
+        <form id="formOtro" class="needs-validation" novalidate>
+          <input type="hidden" name="tipo" value="Otro">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Técnico</label>
+              <input type="text" class="form-control" name="tecnico" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tipo de movimiento</label>
+              <select class="form-select" name="tipo_movimiento" required>
+                <option value="Salida">Salida</option>
+                <option value="Entrada">Entrada</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Hora de entrada</label>
+              <input type="text" class="form-control datetime" name="hora_entrada" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Código retirado</label>
+              <input type="text" class="form-control" name="codigo_retirado" value="N/A" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Serie retirada</label>
+              <input type="text" class="form-control" name="serie_retirada" value="N/A" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Descripción</label>
+              <input type="text" class="form-control" name="descripcion" value="N/A" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">ID de sitio</label>
+              <input type="text" class="form-control" name="id_sitio" value="N/A" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Nombre de sitio</label>
+              <input type="text" class="form-control" name="nombre_sitio" value="N/A" readonly>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de parte</label>
+              <input type="file" class="filepond" name="foto_parte" accept="image/*" disabled>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Foto de serie</label>
+              <input type="file" class="filepond" name="foto_serie" accept="image/*" disabled>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Comentario</label>
+              <textarea class="form-control" name="comentario" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-main">Registrar y Generar PDF</button>
+            <span id="loadingOtro" class="ms-2" style="display:none;">Enviando...</span>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Serie</label>
-        <input type="text" class="form-control" name="serie" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Foto del repuesto</label>
-        <input type="file" class="form-control" accept="image/*" name="fotoRepuesto" required />
-        <div id="previewRepuesto"></div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Foto de la serie</label>
-        <input type="file" class="form-control" accept="image/*" name="fotoSerie" required />
-        <div id="previewSerie"></div>
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Enviar</button>
-    </form>
+    </div>
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- Bootstrap, Flatpickr, FilePond, jsPDF -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <script>
-  const form = document.getElementById("formulario");
-
-  form.fotoRepuesto.onchange = (e) => mostrarPreview(e.target.files[0], "previewRepuesto");
-  form.fotoSerie.onchange = (e) => mostrarPreview(e.target.files[0], "previewSerie");
-
-  function mostrarPreview(file, targetId) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      document.getElementById(targetId).innerHTML = `<img src="${reader.result}" class="img-fluid rounded" />`;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const fd = new FormData(form);
-    const datos = {
-      tecnico: fd.get("tecnico"),
-      motivo: fd.get("motivo"),
-      repuesto: fd.get("repuesto"),
-      serie: fd.get("serie")
-    };
-
-    try {
-      // 1. Enviar datos a Sheets
-      const resp1 = await fetch("https://corsproxy.io/?https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
-      });
-      const json = await resp1.json();
-      console.log("✅ Datos enviados:", json);
-
-      // 2. Subir imagenes a Drive
-      await subirImagen(fd.get("fotoRepuesto"), "fotoRepuesto");
-      await subirImagen(fd.get("fotoSerie"), "fotoSerie");
-
-      alert("✅ Registro completado con éxito");
-      form.reset();
-      document.getElementById("previewRepuesto").innerHTML = "";
-      document.getElementById("previewSerie").innerHTML = "";
-    } catch (err) {
-      console.error("❌ Error:", err);
-      alert("❌ Hubo un error al enviar los datos.");
-    }
+  // Flatpickr
+  document.querySelectorAll('.datetime').forEach(function(input) {
+    flatpickr(input, {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      time_24hr: true
+    });
   });
 
-  async function subirImagen(file, nombreCampo) {
-    const imgFd = new FormData();
-    imgFd.append("archivo", file, `${Date.now()}_${nombreCampo}.jpg`);
+  // FilePond
+  FilePond.registerPlugin();
+  document.querySelectorAll('.filepond').forEach(function(input){
+    FilePond.create(input, {
+      allowImagePreview: true,
+      imagePreviewHeight: 80,
+      labelIdle: 'Arrastra o selecciona una imagen',
+      stylePanelAspectRatio: 0.7
+    });
+  });
 
-    const uploadUrl = "https://corsproxy.io/?https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec";
+  // Función: Tomar datos de form, enviar a proxy, generar PDF
+  function handleFormSubmit(formId, loadingId) {
+    const form = document.getElementById(formId);
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      form.classList.add('was-validated');
 
-    const resp = await fetch(uploadUrl, { method: "POST", body: imgFd });
-    const json = await resp.json();
-    console.log(`✅ Imagen ${nombreCampo} subida`, json);
+      if(!form.checkValidity()) return;
+
+      document.getElementById(loadingId).style.display = "inline";
+
+      // Captura de datos
+      let data = {};
+      new FormData(form).forEach((v, k) => data[k] = v);
+
+      // Foto de parte y foto de serie
+      let fileponds = form.querySelectorAll('.filepond');
+      let imagesBase64 = [];
+      for(let fp of fileponds) {
+        if (fp.hasAttribute('disabled')) { imagesBase64.push(""); continue; }
+        let pond = fp._pond;
+        if (pond && pond.getFiles().length > 0) {
+          let file = pond.getFiles()[0].file;
+          imagesBase64.push(await fileToBase64(file));
+        } else {
+          imagesBase64.push("");
+        }
+      }
+      data["foto_parte"] = imagesBase64[0] || "";
+      data["foto_serie"] = imagesBase64[1] || "";
+
+      // Enviar al proxy (AJAX)
+      try {
+        await fetch('TU_URL_DEL_PROXY', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {'Content-Type': 'application/json'}
+        });
+        // PDF
+        generarPDF(data);
+        alert("¡Registro enviado y PDF generado!");
+        form.reset();
+        form.classList.remove('was-validated');
+        // Reset filepond
+        form.querySelectorAll('.filepond').forEach(fp=>{if(fp._pond) fp._pond.removeFiles();});
+      } catch(err){
+        alert("Error al enviar: " + err);
+      }
+      document.getElementById(loadingId).style.display = "none";
+    });
+  }
+
+  handleFormSubmit('formSalida','loadingSalida');
+  handleFormSubmit('formEntrada','loadingEntrada');
+  handleFormSubmit('formOtro','loadingOtro');
+
+  // Utilidades
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result.split(",")[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Generar PDF
+  function generarPDF(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Boleta de Movimiento de Bodega", 15, 18);
+    doc.setFontSize(11);
+    let y = 30;
+    for (let key of ["tecnico","tipo_movimiento","hora_entrada","codigo_retirado","serie_retirada","descripcion","id_sitio","nombre_sitio","comentario"]) {
+      if(data[key] && data[key]!="N/A")
+        doc.text(`${key.replace(/_/g," ").toUpperCase()}: ${data[key]}`, 15, y++);
+    }
+    // Imágenes (si existen)
+    if (data.foto_parte) {
+      doc.text("Foto de parte:", 15, y+5);
+      doc.addImage("data:image/jpeg;base64,"+data.foto_parte, "JPEG", 15, y+8, 40, 25);
+      y+=35;
+    }
+    if (data.foto_serie) {
+      doc.text("Foto de serie:", 15, y+5);
+      doc.addImage("data:image/jpeg;base64,"+data.foto_serie, "JPEG", 15, y+8, 40, 25);
+      y+=35;
+    }
+    doc.save(`Boleta_${Date.now()}.pdf`);
   }
 </script>
 </body>
