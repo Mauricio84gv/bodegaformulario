@@ -2,224 +2,118 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro de Bodega</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Repuestos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header h1 {
-      font-size: 2rem;
-      color: #1a2a6c;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #1a2a6c;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    textarea {
-      resize: vertical;
-    }
-    .photo-preview {
-      width: 100%;
-      height: 150px;
-      border: 2px dashed #aaa;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-      background: #f8f9fa;
-      cursor: pointer;
-    }
-    .photo-preview img {
-      max-width: 100%;
-      max-height: 100%;
-      display: none;
-    }
-    .photo-label {
-      background: #1a2a6c;
-      color: white;
-      padding: 8px;
-      display: inline-block;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn-submit {
-      background: #b21f1f;
-      color: white;
-      padding: 12px;
-      border: none;
-      width: 100%;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .btn-submit:hover {
-      background: #8b1818;
-    }
+    body { background: #eef5f9; }
+    h1 { color: #0d6efd; }
+    .form-section { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    #preview img { max-width: 100%; max-height: 150px; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1><i class="fas fa-warehouse"></i> Registro de Bodega</h1>
-    </header>
+<div class="container py-4">
+  <h1 class="text-center mb-4">Formulario de Bodega</h1>
+
+  <div class="form-section">
     <form id="formulario">
-      <div class="form-group">
-        <label for="tecnico">Nombre del Técnico</label>
-        <input type="text" id="tecnico" required />
+      <div class="mb-3">
+        <label class="form-label">Técnico</label>
+        <input type="text" class="form-control" name="tecnico" required />
       </div>
-      <div class="form-group">
-        <label for="motivo">Motivo</label>
-        <select id="motivo" required>
+      <div class="mb-3">
+        <label class="form-label">Motivo</label>
+        <select class="form-select" name="motivo" required>
           <option value="">Seleccione...</option>
           <option value="Ingreso">Ingreso</option>
-          <option value="Retiro">Retiro</option>
+          <option value="Salida">Salida</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="repuesto">Descripción del Repuesto</label>
-        <textarea id="repuesto" rows="3" required></textarea>
+      <div class="mb-3">
+        <label class="form-label">Nombre del repuesto</label>
+        <input type="text" class="form-control" name="repuesto" required />
       </div>
-      <div class="form-group">
-        <label for="serie">Número de Serie</label>
-        <input type="text" id="serie" required />
+      <div class="mb-3">
+        <label class="form-label">Serie</label>
+        <input type="text" class="form-control" name="serie" required />
       </div>
-
-      <div class="form-group">
-        <label>Foto del Repuesto</label>
-        <div class="photo-preview" id="preview-repuesto"><i class="fas fa-camera fa-2x" style="color:#ccc"></i><img id="img-repuesto" /></div>
-        <label class="photo-label" for="foto-repuesto"><i class="fas fa-upload"></i> Seleccionar imagen</label>
-        <input type="file" id="foto-repuesto" accept="image/*" style="display:none" />
+      <div class="mb-3">
+        <label class="form-label">Foto del repuesto</label>
+        <input type="file" class="form-control" accept="image/*" name="fotoRepuesto" required />
+        <div id="previewRepuesto"></div>
       </div>
-
-      <div class="form-group">
-        <label>Foto de la Serie</label>
-        <div class="photo-preview" id="preview-serie"><i class="fas fa-barcode fa-2x" style="color:#ccc"></i><img id="img-serie" /></div>
-        <label class="photo-label" for="foto-serie"><i class="fas fa-upload"></i> Seleccionar imagen</label>
-        <input type="file" id="foto-serie" accept="image/*" style="display:none" />
+      <div class="mb-3">
+        <label class="form-label">Foto de la serie</label>
+        <input type="file" class="form-control" accept="image/*" name="fotoSerie" required />
+        <div id="previewSerie"></div>
       </div>
-
-      <button type="button" class="btn-submit" id="guardar">Guardar en Google Sheets</button>
+      <button type="submit" class="btn btn-primary w-100">Enviar</button>
     </form>
   </div>
+</div>
 
-  <script>
-    function setupPreview(inputId, imgId, previewId) {
-      const input = document.getElementById(inputId);
-      const img = document.getElementById(imgId);
-      const preview = document.getElementById(previewId);
-      input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (evt) => {
-            img.src = evt.target.result;
-            img.style.display = 'block';
-            preview.querySelector('i').style.display = 'none';
-          };
-          reader.readAsDataURL(file);
-        }
+<!-- Scripts -->
+<script>
+  const form = document.getElementById("formulario");
+
+  form.fotoRepuesto.onchange = (e) => mostrarPreview(e.target.files[0], "previewRepuesto");
+  form.fotoSerie.onchange = (e) => mostrarPreview(e.target.files[0], "previewSerie");
+
+  function mostrarPreview(file, targetId) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById(targetId).innerHTML = `<img src="${reader.result}" class="img-fluid rounded" />`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fd = new FormData(form);
+    const datos = {
+      tecnico: fd.get("tecnico"),
+      motivo: fd.get("motivo"),
+      repuesto: fd.get("repuesto"),
+      serie: fd.get("serie")
+    };
+
+    try {
+      // 1. Enviar datos a Sheets
+      const resp1 = await fetch("https://corsproxy.io/?https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
       });
-      preview.addEventListener('click', () => input.click());
+      const json = await resp1.json();
+      console.log("✅ Datos enviados:", json);
+
+      // 2. Subir imagenes a Drive
+      await subirImagen(fd.get("fotoRepuesto"), "fotoRepuesto");
+      await subirImagen(fd.get("fotoSerie"), "fotoSerie");
+
+      alert("✅ Registro completado con éxito");
+      form.reset();
+      document.getElementById("previewRepuesto").innerHTML = "";
+      document.getElementById("previewSerie").innerHTML = "";
+    } catch (err) {
+      console.error("❌ Error:", err);
+      alert("❌ Hubo un error al enviar los datos.");
     }
+  });
 
-    setupPreview("foto-repuesto", "img-repuesto", "preview-repuesto");
-    setupPreview("foto-serie", "img-serie", "preview-serie");
+  async function subirImagen(file, nombreCampo) {
+    const imgFd = new FormData();
+    imgFd.append("archivo", file, `${Date.now()}_${nombreCampo}.jpg`);
 
-    async function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
+    const uploadUrl = "https://corsproxy.io/?https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec";
 
-    document.getElementById("guardar").addEventListener("click", async () => {
-      const tecnico = document.getElementById("tecnico").value.trim();
-      const motivo = document.getElementById("motivo").value;
-      const repuesto = document.getElementById("repuesto").value.trim();
-      const serie = document.getElementById("serie").value.trim();
-
-      const repuestoFoto = document.getElementById("foto-repuesto").files[0];
-      const serieFoto = document.getElementById("foto-serie").files[0];
-
-      const repuestoBase64 = repuestoFoto ? await toBase64(repuestoFoto) : "";
-      const serieBase64 = serieFoto ? await toBase64(serieFoto) : "";
-
-      if (!tecnico || !motivo || !repuesto || !serie) {
-        alert("Por favor complete todos los campos");
-        return;
-      }
-
-      const data = {
-        tecnico,
-        motivo,
-        repuesto,
-        serie,
-        fotoRepuesto: repuestoBase64,
-        fotoSerie: serieBase64,
-      };
-
-      const urlOriginal = "https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec";
-      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlOriginal)}`;
-
-      try {
-        const response = await fetch(proxyUrl, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const res = await response.json();
-        if (res.status === "ok") {
-          alert("✅ Datos enviados correctamente.");
-          document.getElementById("formulario").reset();
-        } else {
-          alert("❌ Error al guardar: " + res.message);
-        }
-      } catch (err) {
-        alert("⚠️ Error de red: " + err);
-      }
-    });
-  </script>
+    const resp = await fetch(uploadUrl, { method: "POST", body: imgFd });
+    const json = await resp.json();
+    console.log(`✅ Imagen ${nombreCampo} subida`, json);
+  }
+</script>
 </body>
 </html>
