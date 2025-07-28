@@ -1,140 +1,143 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Control de Bodega – Repuestos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<title>Control de Bodega – Repuestos</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
+<style>
         body{background:#f8f9fa;}
         .badge{font-size:.85em;}
-    </style>
+    
+.card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+h2 {
+  color: #0d6efd;
+}
+body {
+  background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+}
+</style>
 </head>
 <body>
 <div class="container py-4">
-    <h2 class="mb-4 text-center">Control de Bodega – Repuestos</h2>
-
-    <!-- ACCORDEON -->
-    <div class="accordion" id="accordionBodega">
-        <!-- ENTRADA DE EQUIPO -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#entradaCollapse">
+<h2 class="mb-4 text-center">Control de Bodega – Repuestos</h2>
+<!-- ACCORDEON -->
+<div class="accordion" id="accordionBodega">
+<!-- ENTRADA DE EQUIPO -->
+<div class="accordion-item">
+<h2 class="accordion-header">
+<button class="accordion-button collapsed" data-bs-target="#entradaCollapse" data-bs-toggle="collapse" type="button">
                     Entrada de equipo
                 </button>
-            </h2>
-            <div id="entradaCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
-                <div class="accordion-body">
-                    <form id="formEntrada">
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label">Tipo de equipo</label><input type="text" class="form-control" name="tipo" required></div>
-                            <div class="col-md-3"><label class="form-label">Modelo</label><input type="text" class="form-control" name="modelo" required></div>
-                            <div class="col-md-3"><label class="form-label">Serie</label><input type="text" class="form-control" name="serie" required></div>
-                            <div class="col-md-3"><label class="form-label">Técnico que ingresa</label><input type="text" class="form-control" name="tecnicoEntrada" required></div>
-
-                            <div class="col-md-6"><label class="form-label">Fecha y hora de entrada</label><input type="text" class="form-control datetime" name="fechaHoraEntrada" required></div>
-                            <div class="col-md-6"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Motivo</label>
-                                <select class="form-select" name="motivo" required>
-                                    <option value="">Seleccione...</option>
-                                    <option>Ingreso nuevo</option>
-                                    <option>Devolución</option>
-                                    <option>Otro</option>
-                                </select>
-                            </div>
-                            <div class="col-12 d-none" id="otroEntrada">
-                                <label class="form-label">Explique caso especial</label>
-                                <input type="text" class="form-control" name="otroTexto">
-                            </div>
-                        </div>
-                        <button class="btn btn-success mt-3">Guardar entrada</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- SALIDA DE EQUIPO -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salidaCollapse">
+</h2>
+<div class="accordion-collapse collapse" data-bs-parent="#accordionBodega" id="entradaCollapse">
+<div class="accordion-body">
+<form id="formEntrada">
+<div class="row g-3">
+<div class="col-md-3"><label class="form-label">Tipo de equipo</label><input class="form-control" name="tipo" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">Modelo</label><input class="form-control" name="modelo" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">Serie</label><input class="form-control" name="serie" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">Técnico que ingresa</label><input class="form-control" name="tecnicoEntrada" required="" type="text"/></div>
+<div class="col-md-6"><label class="form-label">Fecha y hora de entrada</label><input class="form-control datetime" name="fechaHoraEntrada" required="" type="text"/></div>
+<div class="col-md-6"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input class="form-control" name="horaSalidaBodega" required="" type="time"/></div>
+<div class="col-md-6">
+<label class="form-label">Motivo</label>
+<select class="form-select" name="motivo" required="">
+<option value="">Seleccione...</option>
+<option>Ingreso nuevo</option>
+<option>Devolución</option>
+<option>Otro</option>
+</select>
+</div>
+<div class="col-12 d-none" id="otroEntrada">
+<label class="form-label">Explique caso especial</label>
+<input class="form-control" name="otroTexto" type="text"/>
+</div>
+</div>
+<button class="btn btn-success mt-3">Guardar entrada</button>
+</form>
+</div>
+</div>
+</div>
+<!-- SALIDA DE EQUIPO -->
+<div class="accordion-item">
+<h2 class="accordion-header">
+<button class="accordion-button collapsed" data-bs-target="#salidaCollapse" data-bs-toggle="collapse" type="button">
                     Salida de equipo
                 </button>
-            </h2>
-            <div id="salidaCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
-                <div class="accordion-body">
-                    <form id="formSalida">
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label">Tipo de equipo</label><input type="text" class="form-control" name="tipo" required></div>
-                            <div class="col-md-3"><label class="form-label">Modelo</label><input type="text" class="form-control" name="modelo" required></div>
-                            <div class="col-md-3"><label class="form-label">Serie</label><input type="text" class="form-control" name="serie" required></div>
-                            <div class="col-md-3"><label class="form-label">ID del sitio destino</label><input type="text" class="form-control" name="idSitio" required></div>
-
-                            <div class="col-md-4"><label class="form-label">Técnico que retira</label><input type="text" class="form-control" name="tecnicoSalida" required></div>
-                            <div class="col-md-4"><label class="form-label">Fecha y hora de salida</label><input type="text" class="form-control datetime" name="fechaHoraSalida" required></div>
-                            <div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
-
-                            <div class="col-12"><label class="form-label">Observaciones</label><input type="text" class="form-control" name="obsSalida"></div>
-                        </div>
-                        <button class="btn btn-primary mt-3">Guardar salida</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- INVENTARIO / ENTRADA TÉCNICO -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inventarioCollapse">
+</h2>
+<div class="accordion-collapse collapse" data-bs-parent="#accordionBodega" id="salidaCollapse">
+<div class="accordion-body">
+<form id="formSalida">
+<div class="row g-3">
+<div class="col-md-3"><label class="form-label">Tipo de equipo</label><input class="form-control" name="tipo" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">Modelo</label><input class="form-control" name="modelo" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">Serie</label><input class="form-control" name="serie" required="" type="text"/></div>
+<div class="col-md-3"><label class="form-label">ID del sitio destino</label><input class="form-control" name="idSitio" required="" type="text"/></div>
+<div class="col-md-4"><label class="form-label">Técnico que retira</label><input class="form-control" name="tecnicoSalida" required="" type="text"/></div>
+<div class="col-md-4"><label class="form-label">Fecha y hora de salida</label><input class="form-control datetime" name="fechaHoraSalida" required="" type="text"/></div>
+<div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input class="form-control" name="horaSalidaBodega" required="" type="time"/></div>
+<div class="col-12"><label class="form-label">Observaciones</label><input class="form-control" name="obsSalida" type="text"/></div>
+</div>
+<button class="btn btn-primary mt-3">Guardar salida</button>
+</form>
+</div>
+</div>
+</div>
+<!-- INVENTARIO / ENTRADA TÉCNICO -->
+<div class="accordion-item">
+<h2 class="accordion-header">
+<button class="accordion-button collapsed" data-bs-target="#inventarioCollapse" data-bs-toggle="collapse" type="button">
                     Inventario
                 </button>
-            </h2>
-            <div id="inventarioCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
-                <div class="accordion-body">
-                    <form id="formInventario">
-                        <div class="row g-3">
-                            <div class="col-md-4"><label class="form-label">Técnico que ingresa</label><input type="text" class="form-control" name="tecnicoEntrada" required></div>
-                            <div class="col-md-4"><label class="form-label">Fecha y hora de registro</label><input type="text" class="form-control datetime" name="fechaHoraRegistro" required></div>
-                            <div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
-
-                            <div class="col-12"><label class="form-label">Observaciones / detalle</label><input type="text" class="form-control" name="obsInventario"></div>
-                        </div>
-                        <button class="btn btn-secondary mt-3">Guardar inventario</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABLA RESUMEN -->
-    <div class="card mt-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Movimientos</span>
-            <div>
-                <button class="btn btn-sm btn-outline-secondary" onclick="exportCSV()">Exportar CSV</button>
-                <input type="file" id="importFile" accept=".csv" style="display:none" onchange="importCSV(event)">
-                <button class="btn btn-sm btn-outline-secondary ms-1" onclick="document.getElementById('importFile').click()">Importar CSV</button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-sm align-middle">
-                    <thead class="table-light">
-                    <tr>
-                        <th>Fecha/Hora</th><th>Mov</th><th>Tipo</th><th>Modelo</th><th>Serie</th>
-                        <th>Técnico entrada</th><th>Técnico salida</th><th>ID sitio</th>
-                        <th>Hora salida bodega</th><th>Motivo/Obs</th><th></th>
-                    </tr>
-                    </thead>
-                    <tbody id="movimientos"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+</h2>
+<div class="accordion-collapse collapse" data-bs-parent="#accordionBodega" id="inventarioCollapse">
+<div class="accordion-body">
+<form id="formInventario">
+<div class="row g-3">
+<div class="col-md-4"><label class="form-label">Técnico que ingresa</label><input class="form-control" name="tecnicoEntrada" required="" type="text"/></div>
+<div class="col-md-4"><label class="form-label">Fecha y hora de registro</label><input class="form-control datetime" name="fechaHoraRegistro" required="" type="text"/></div>
+<div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input class="form-control" name="horaSalidaBodega" required="" type="time"/></div>
+<div class="col-12"><label class="form-label">Observaciones / detalle</label><input class="form-control" name="obsInventario" type="text"/></div>
 </div>
+<button class="btn btn-secondary mt-3">Guardar inventario</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+<!-- TABLA RESUMEN -->
+<div class="card mt-4">
+<div class="card-header d-flex justify-content-between align-items-center">
+<span>Movimientos</span>
+<div>
 
+<input accept=".csv" id="importFile" onchange="importCSV(event)" style="display:none" type="file"/>
+
+</div>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-sm align-middle">
+<thead class="table-light">
+<tr>
+<th>Fecha/Hora</th><th>Mov</th><th>Tipo</th><th>Modelo</th><th>Serie</th>
+<th>Técnico entrada</th><th>Técnico salida</th><th>ID sitio</th>
+<th>Hora salida bodega</th><th>Motivo/Obs</th><th></th>
+</tr>
+</thead>
+<tbody id="movimientos"></tbody>
+</table>
+</div>
+</div>
+</div>
+<button class="btn btn-primary mt-4" onclick="guardarComoPDF()">📄 Guardar como PDF</button></div>
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
@@ -144,7 +147,7 @@ flatpickr('.datetime', { enableTime: true, dateFormat: 'd/m/Y H:i', locale: 'es'
 
 // ---------- CONFIGURAR TU WEB APP ----------
 // 1. Reemplazá esta URL por la que obtengas al desplegar tu Google Apps Script
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz64YmP3iCpUJHgWIaYdFe9uV5W8YvbJarMTZXFItFJmMeiDV3IMjHOT-SZsj3JiPV8Rw/exec';
 
 // ---------- CRUD LOCAL + SHEETS ----------
 const LS_KEY = 'bodegaMovs';
@@ -278,6 +281,17 @@ document.querySelector('select[name="motivo"]').addEventListener('change', e => 
   document.getElementById('otroEntrada').classList.toggle('d-none', e.target.value !== 'Otro');
 });
 </script>
-</body>
+<script>
+function guardarComoPDF() {
+  const elemento = document.querySelector('.container');
+  const opt = {
+    margin:       0.5,
+    filename:     'reporte_bodega.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().from(elemento).set(opt).save();
+}
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script></body>
 </html>
-
