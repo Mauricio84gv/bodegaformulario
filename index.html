@@ -52,8 +52,9 @@
 <body>
 <div class="container">
   <h1>Registro de Movimiento en Bodega</h1>
+
   <label for="seccion">Tipo de Registro:</label>
-  <select id="seccion" onchange="mostrarFormulario()">
+  <select id="seccion">
     <option value="">Seleccione...</option>
     <option value="salida">A. Salida de equipos</option>
     <option value="entrada">B. Entrada de equipos</option>
@@ -105,20 +106,70 @@
 </div>
 
 <script>
-function mostrarFormulario() {
-  const seccion = document.getElementById('seccion').value;
   const form = document.getElementById('formulario');
+  const seccion = document.getElementById('seccion');
   const datos = document.getElementById('datosAdicionales');
-  form.classList.remove('hidden');
 
-  if (seccion === 'otro') {
-    const inputs = datos.querySelectorAll('input');
-    inputs.forEach(input => input.value = 'N/A');
-    datos.querySelectorAll('input[type="file"]').forEach(fileInput => fileInput.disabled = true);
-  } else {
-    datos.querySelectorAll('input[type="file"]').forEach(fileInput => fileInput.disabled = false);
+  seccion.addEventListener('change', mostrarFormulario);
+
+  function mostrarFormulario() {
+    const tipo = seccion.value;
+    form.classList.remove('hidden');
+
+    if (tipo === 'otro') {
+      datos.querySelectorAll('input').forEach(input => {
+        if (input.type !== 'file') input.value = 'N/A';
+        else input.disabled = true;
+      });
+    } else {
+      datos.querySelectorAll('input').forEach(input => {
+        if (input.type !== 'file') input.value = '';
+        else input.disabled = false;
+      });
+    }
   }
-}
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Convertir imágenes a base64
+    data.fotoParteURL = await toBase64(formData.get('foto_parte'));
+    data.fotoSerieURL = await toBase64(formData.get('foto_serie'));
+
+    // Enviar al script
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const res = await response.json();
+      if (res.status === 'ok') {
+        alert('✅ Registro guardado con éxito');
+        form.reset();
+        form.classList.add('hidden');
+      } else {
+        alert('❌ Error: ' + res.message);
+      }
+    } catch (err) {
+      alert('❌ Error al enviar: ' + err);
+    }
+  });
+
+  function toBase64(file) {
+    return new Promise((resolve) => {
+      if (!file || file.size === 0) return resolve('');
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
 </script>
 </body>
 </html>
