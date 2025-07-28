@@ -299,9 +299,12 @@
       data["foto_parte"] = imagesBase64[0] || "";
       data["foto_serie"] = imagesBase64[1] || "";
 
-      // Enviar al proxy (AJAX)
+      // Enviar al proxy gratuito (CORS)
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec';
+      const proxyURL = 'https://corsproxy.io/?' + encodeURIComponent(scriptURL);
+
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec', {
+        await fetch(proxyURL, {
           method: 'POST',
           body: JSON.stringify(data),
           headers: {'Content-Type': 'application/json'}
