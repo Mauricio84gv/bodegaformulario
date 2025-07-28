@@ -1,167 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Control de Bodega</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      background: #f4f6f8;
-      padding: 20px;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .form-section {
-      display: none;
-      margin-top: 20px;
-    }
-    .form-section.active {
-      display: block;
-    }
-    .btn-primary {
-      background-color: #004085;
-      border: none;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Enviar datos con proxy gratuito</title>
 </head>
 <body>
-  <div class="container">
-    <h2 class="text-center text-primary">Registro de Ingreso a Bodega</h2>
-
-    <div class="mb-3">
-      <label class="form-label">Tipo de Movimiento</label>
-      <select class="form-select" id="tipoMovimiento" onchange="mostrarFormulario()">
-        <option selected disabled>Selecciona</option>
-        <option value="Salida">Salida de Equipos</option>
-        <option value="Entrada">Entrada de Equipos</option>
-        <option value="Otro">Otro Motivo</option>
-      </select>
-    </div>
-
-    <form id="formulario" class="form-section card p-4 shadow">
-      <div class="row g-3">
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Técnico" id="tecnico" required />
-        </div>
-        <div class="col-md-6">
-          <input type="time" class="form-control" id="hora_entrada" required />
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Código Retirado" id="codigo_retirado" />
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Serie Retirada" id="serie_retirada" />
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Descripción" id="descripcion" />
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="ID de Sitio" id="id_sitio" />
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Nombre de Sitio" id="nombre_sitio" />
-        </div>
-        <div class="col-md-6">
-          <label>Foto Parte</label>
-          <input type="file" class="form-control" id="foto_parte" accept="image/*" />
-        </div>
-        <div class="col-md-6">
-          <label>Foto Serie</label>
-          <input type="file" class="form-control" id="foto_serie" accept="image/*" />
-        </div>
-        <div class="col-md-12">
-          <textarea class="form-control" placeholder="Comentario" id="comentario" rows="3"></textarea>
-        </div>
-      </div>
-
-      <div class="mt-4 text-end">
-        <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Guardar y Generar PDF</button>
-      </div>
-    </form>
-  </div>
+  <h3>Formulario de prueba</h3>
+  <input type="text" id="nombre" placeholder="Nombre del técnico"><br><br>
+  <button onclick="enviarDatos()">Enviar</button>
 
   <script>
-    const proxyUrl = "https://wandering-king-395e.mauriciogonzalezvillegas.workers.dev";
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec"; // ← cambia por tu URL real
+    async function enviarDatos() {
+      const nombre = document.getElementById('nombre').value;
 
-    function mostrarFormulario() {
-      const tipo = document.getElementById("tipoMovimiento").value;
-      document.getElementById("formulario").classList.add("active");
-
-      const camposNA = ["codigo_retirado", "serie_retirada", "descripcion", "id_sitio", "nombre_sitio"];
-      camposNA.forEach(id => document.getElementById(id).value = (tipo === "Otro") ? "N/A" : "");
-    }
-
-    async function convertirImagenBase64(input) {
-      return new Promise((resolve) => {
-        const file = input.files[0];
-        if (!file) return resolve("");
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64 = reader.result.split(',')[1];
-          resolve(base64);
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function enviarFormulario() {
-      const fotoParte64 = await convertirImagenBase64(document.getElementById("foto_parte"));
-      const fotoSerie64 = await convertirImagenBase64(document.getElementById("foto_serie"));
-
-      const data = {
-        tecnico: document.getElementById("tecnico").value,
-        tipo_movimiento: document.getElementById("tipoMovimiento").value,
-        hora_entrada: document.getElementById("hora_entrada").value,
-        codigo_retirado: document.getElementById("codigo_retirado").value,
-        serie_retirada: document.getElementById("serie_retirada").value,
-        descripcion: document.getElementById("descripcion").value,
-        id_sitio: document.getElementById("id_sitio").value,
-        nombre_sitio: document.getElementById("nombre_sitio").value,
-        comentario: document.getElementById("comentario").value,
-        foto_parte: fotoParte64,
-        foto_serie: fotoSerie64
+      const datos = {
+        tecnico: nombre,
+        tipo_mov: "Entrada",
+        motivo: "Prueba desde proxy",
+        repuesto: "RepuestoX",
+        serie: "12345"
       };
 
-      generarPDF(data);
+      const originalUrl = "https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec";
+      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(originalUrl);
 
       try {
-        const response = await fetch(proxyUrl + "?" + new URLSearchParams({ url: scriptUrl }), {
+        const respuesta = await fetch(proxyUrl, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(datos)
         });
 
-        const result = await response.json();
-        if (result.status === "ok") {
-          alert("Datos guardados correctamente.");
-        } else {
-          throw new Error(result.error || "Error al guardar");
-        }
+        const json = await respuesta.json();
+        alert("Respuesta del servidor: " + json.message || "Enviado correctamente");
       } catch (error) {
-        alert("Error al enviar: " + error.message);
+        console.error("Error al enviar:", error);
+        alert("Error al enviar los datos");
       }
-    }
-
-    function generarPDF(data) {
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF();
-
-      pdf.setFontSize(14);
-      pdf.text("Boleta de Movimiento", 20, 20);
-      pdf.setFontSize(11);
-
-      let y = 30;
-      Object.entries(data).forEach(([clave, valor]) => {
-        if (valor && !clave.includes("foto")) {
-          pdf.text(`${clave}: ${valor}`, 20, y);
-          y += 10;
-        }
-      });
-
-      pdf.save(`Boleta_${data.tipo_movimiento}_${Date.now()}.pdf`);
     }
   </script>
 </body>
