@@ -1,434 +1,283 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro de Bodega - Sistema de Control</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
-    @keyframes gradientBG {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    header {
-      background: rgba(0, 30, 60, 0.85);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      border-bottom: 5px solid #ffcc00;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-    }
-    header h1 i {
-      color: #ffcc00;
-    }
-    .form-section {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      max-width: 600px;
-      margin: 0 auto 30px auto;
-    }
-    .section-title {
-      font-size: 1.8rem;
-      color: #1a2a6c;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #ffcc00;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #1a2a6c;
-    }
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      background: #f8f9fa;
-      transition: all 0.3s;
-    }
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #1a2a6c;
-      box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.2);
-      background: white;
-    }
-    .date-time-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-    .photo-upload {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 15px;
-    }
-    .photo-item {
-      flex: 1;
-      min-width: 200px;
-      text-align: center;
-    }
-    .photo-preview {
-      width: 100%;
-      height: 180px;
-      background: #f8f9fa;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .photo-preview:hover {
-      border-color: #1a2a6c;
-      background: #eef2f7;
-    }
-    .photo-preview img {
-      max-width: 100%;
-      max-height: 100%;
-      display: none;
-    }
-    .photo-label {
-      display: block;
-      background: #1a2a6c;
-      color: white;
-      padding: 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-weight: 500;
-    }
-    .photo-label:hover {
-      background: #0d1a4a;
-      transform: translateY(-2px);
-    }
-    .btn-submit {
-      background: linear-gradient(to right, #1a2a6c, #b21f1f);
-      color: white;
-      border: none;
-      padding: 15px;
-      font-size: 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-      margin-top: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .btn-submit:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    }
-    footer {
-      text-align: center;
-      color: white;
-      padding: 25px;
-      margin-top: 30px;
-      font-size: 14px;
-      opacity: 0.8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Control de Bodega – Repuestos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <style>
+        body{background:#f8f9fa;}
+        .badge{font-size:.85em;}
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1><i class="fas fa-warehouse"></i> Sistema de Registro de Bodega</h1>
-      <p>Control de entrada y salida de repuestos técnicos</p>
-    </header>
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Control de Bodega – Repuestos</h2>
 
-    <section class="form-section">
-      <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Nuevo Registro</h2>
-      <form id="inventory-form">
-        <div class="form-group">
-          <label for="reason">Motivo del Ingreso</label>
-          <select id="reason" required>
-            <option value="Retiro de equipo">Retiro de equipo</option>
-            <option value="Ingresar equipo a bodega">Ingresar equipo a bodega</option>
-            <option value="Devolución de equipo no usado">Devolución de equipo no usado</option>
-          </select>
-        </div>
+    <!-- ACCORDEON -->
+    <div class="accordion" id="accordionBodega">
+        <!-- ENTRADA DE EQUIPO -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#entradaCollapse">
+                    Entrada de equipo
+                </button>
+            </h2>
+            <div id="entradaCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
+                <div class="accordion-body">
+                    <form id="formEntrada">
+                        <div class="row g-3">
+                            <div class="col-md-3"><label class="form-label">Tipo de equipo</label><input type="text" class="form-control" name="tipo" required></div>
+                            <div class="col-md-3"><label class="form-label">Modelo</label><input type="text" class="form-control" name="modelo" required></div>
+                            <div class="col-md-3"><label class="form-label">Serie</label><input type="text" class="form-control" name="serie" required></div>
+                            <div class="col-md-3"><label class="form-label">Técnico que ingresa</label><input type="text" class="form-control" name="tecnicoEntrada" required></div>
 
-        <div class="form-group">
-          <label for="tech-name">Nombre del Técnico</label>
-          <input type="text" id="tech-name" placeholder="Ingrese nombre completo del técnico" required />
-        </div>
+                            <div class="col-md-6"><label class="form-label">Fecha y hora de entrada</label><input type="text" class="form-control datetime" name="fechaHoraEntrada" required></div>
+                            <div class="col-md-6"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
 
-        <div class="form-group date-time-group">
-          <div>
-            <label for="entry-date">Fecha de Ingreso</label>
-            <input type="date" id="entry-date" required />
-          </div>
-          <div>
-            <label for="entry-time">Hora de Ingreso</label>
-            <input type="time" id="entry-time" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="exit-time">Hora de Salida</label>
-          <input type="time" id="exit-time" required />
-        </div>
-
-        <div class="form-group">
-          <label for="site-id">ID del Sitio</label>
-          <input type="text" id="site-id" placeholder="Ej: ST-001" />
-        </div>
-
-        <div class="form-group">
-          <label for="site-name">Nombre del Sitio</label>
-          <input type="text" id="site-name" placeholder="Ej: Planta Principal" />
-        </div>
-
-        <div class="form-group">
-          <label for="part-number">Número de Parte</label>
-          <input type="text" id="part-number" placeholder="Ej: P-2023-001" required />
-        </div>
-
-        <div class="form-group">
-          <label for="part-description">Descripción del Repuesto</label>
-          <textarea
-            id="part-description"
-            rows="3"
-            placeholder="Describa el repuesto..."
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="serial-number">Número de Serie</label>
-          <input type="text" id="serial-number" placeholder="Número de serie único" required />
-        </div>
-
-        <div class="form-group">
-          <label>Fotografías</label>
-          <div class="photo-upload">
-            <div class="photo-item">
-              <div class="photo-preview" id="part-photo-preview">
-                <i class="fas fa-camera fa-3x" style="color: #ccc;"></i>
-                <img id="part-photo-img" src="" alt="Vista previa" />
-              </div>
-              <label class="photo-label" for="part-photo"
-                ><i class="fas fa-upload"></i> Foto del Repuesto</label
-              >
-              <input type="file" id="part-photo" accept="image/*" style="display: none" />
+                            <div class="col-md-6">
+                                <label class="form-label">Motivo</label>
+                                <select class="form-select" name="motivo" required>
+                                    <option value="">Seleccione...</option>
+                                    <option>Ingreso nuevo</option>
+                                    <option>Devolución</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-12 d-none" id="otroEntrada">
+                                <label class="form-label">Explique caso especial</label>
+                                <input type="text" class="form-control" name="otroTexto">
+                            </div>
+                        </div>
+                        <button class="btn btn-success mt-3">Guardar entrada</button>
+                    </form>
+                </div>
             </div>
-            <div class="photo-item">
-              <div class="photo-preview" id="serial-photo-preview">
-                <i class="fas fa-barcode fa-3x" style="color: #ccc"></i>
-                <img id="serial-photo-img" src="" alt="Vista previa" />
-              </div>
-              <label class="photo-label" for="serial-photo"
-                ><i class="fas fa-upload"></i> Foto de la Serie</label
-              >
-              <input type="file" id="serial-photo" accept="image/*" style="display: none" />
-            </div>
-          </div>
         </div>
 
-        <button type="button" id="save-to-drive" class="btn-submit">
-          <i class="fas fa-cloud-upload-alt"></i> Guardar en Google Drive
-        </button>
-      </form>
-    </section>
+        <!-- SALIDA DE EQUIPO -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salidaCollapse">
+                    Salida de equipo
+                </button>
+            </h2>
+            <div id="salidaCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
+                <div class="accordion-body">
+                    <form id="formSalida">
+                        <div class="row g-3">
+                            <div class="col-md-3"><label class="form-label">Tipo de equipo</label><input type="text" class="form-control" name="tipo" required></div>
+                            <div class="col-md-3"><label class="form-label">Modelo</label><input type="text" class="form-control" name="modelo" required></div>
+                            <div class="col-md-3"><label class="form-label">Serie</label><input type="text" class="form-control" name="serie" required></div>
+                            <div class="col-md-3"><label class="form-label">ID del sitio destino</label><input type="text" class="form-control" name="idSitio" required></div>
 
-    <footer>
-      <p>Sistema de Registro de Bodega &copy; 2025 | Todos los derechos reservados</p>
-    </footer>
-  </div>
+                            <div class="col-md-4"><label class="form-label">Técnico que retira</label><input type="text" class="form-control" name="tecnicoSalida" required></div>
+                            <div class="col-md-4"><label class="form-label">Fecha y hora de salida</label><input type="text" class="form-control datetime" name="fechaHoraSalida" required></div>
+                            <div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const now = new Date();
-      const today = now.toISOString().substring(0, 10);
-      const time = now.toTimeString().substring(0, 5);
-      document.getElementById("entry-date").value = today;
-      document.getElementById("entry-time").value = time;
-      document.getElementById("exit-time").value = time;
+                            <div class="col-12"><label class="form-label">Observaciones</label><input type="text" class="form-control" name="obsSalida"></div>
+                        </div>
+                        <button class="btn btn-primary mt-3">Guardar salida</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-      setupImagePreview("part-photo", "part-photo-img", "part-photo-preview");
-      setupImagePreview("serial-photo", "serial-photo-img", "serial-photo-preview");
+        <!-- INVENTARIO / ENTRADA TÉCNICO -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inventarioCollapse">
+                    Inventario
+                </button>
+            </h2>
+            <div id="inventarioCollapse" class="accordion-collapse collapse" data-bs-parent="#accordionBodega">
+                <div class="accordion-body">
+                    <form id="formInventario">
+                        <div class="row g-3">
+                            <div class="col-md-4"><label class="form-label">Técnico que ingresa</label><input type="text" class="form-control" name="tecnicoEntrada" required></div>
+                            <div class="col-md-4"><label class="form-label">Fecha y hora de registro</label><input type="text" class="form-control datetime" name="fechaHoraRegistro" required></div>
+                            <div class="col-md-4"><label class="form-label">Hora de salida de bodega <span class="text-danger">*</span></label><input type="time" class="form-control" name="horaSalidaBodega" required></div>
 
-      // Al cambiar motivo, autollenar sitio con N/A si no es "Retiro"
-      document.getElementById("reason").addEventListener("change", function () {
-        const reason = this.value;
-        const siteId = document.getElementById("site-id");
-        const siteName = document.getElementById("site-name");
-        if (reason === "Retiro de equipo") {
-          siteId.value = "";
-          siteName.value = "";
-          siteId.disabled = false;
-          siteName.disabled = false;
-        } else {
-          siteId.value = "N/A";
-          siteName.value = "N/A";
-          siteId.disabled = true;
-          siteName.disabled = true;
-        }
-      });
+                            <div class="col-12"><label class="form-label">Observaciones / detalle</label><input type="text" class="form-control" name="obsInventario"></div>
+                        </div>
+                        <button class="btn btn-secondary mt-3">Guardar inventario</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLA RESUMEN -->
+    <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Movimientos</span>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary" onclick="exportCSV()">Exportar CSV</button>
+                <input type="file" id="importFile" accept=".csv" style="display:none" onchange="importCSV(event)">
+                <button class="btn btn-sm btn-outline-secondary ms-1" onclick="document.getElementById('importFile').click()">Importar CSV</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Fecha/Hora</th><th>Mov</th><th>Tipo</th><th>Modelo</th><th>Serie</th>
+                        <th>Técnico entrada</th><th>Técnico salida</th><th>ID sitio</th>
+                        <th>Hora salida bodega</th><th>Motivo/Obs</th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="movimientos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+<script>
+// ---------- CONFIG FECHA/HORA ----------
+flatpickr('.datetime', { enableTime: true, dateFormat: 'd/m/Y H:i', locale: 'es' });
+
+// ---------- CONFIGURAR TU WEB APP ----------
+// 1. Reemplazá esta URL por la que obtengas al desplegar tu Google Apps Script
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxLPjZnKIRU4Vd_IMnIWzwMD9NYwGc_ZtmfdlJolT5v_IPnPMZl4svZE-T_39u87HDoGg/exec';
+
+// ---------- CRUD LOCAL + SHEETS ----------
+const LS_KEY = 'bodegaMovs';
+let movimientos = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+
+function save() {
+  localStorage.setItem(LS_KEY, JSON.stringify(movimientos));
+  render();
+}
+function addMov(mov) {
+  mov.id = Date.now();
+  movimientos.unshift(mov);
+  save();
+  sendToSheets(mov);        // Envío a Google Sheets
+}
+function render() {
+  const tbody = document.getElementById('movimientos');
+  tbody.innerHTML = movimientos.map(m => `
+    <tr>
+      <td>${m.fechaHora}</td>
+      <td><span class="badge ${m.tipoMov==='ENTRADA'?'bg-success': m.tipoMov==='SALIDA'?'bg-primary':'bg-secondary'}">${m.tipoMov}</span></td>
+      <td>${m.tipo || '—'}</td><td>${m.modelo || '—'}</td><td>${m.serie || '—'}</td>
+      <td>${m.tecnicoEntrada || '—'}</td><td>${m.tecnicoSalida || '—'}</td>
+      <td>${m.idSitio || '—'}</td>
+      <td>${m.horaSalidaBodega || '—'}</td>
+      <td>${m.motivo || m.obsSalida || m.obsInventario || ''}</td>
+      <td><button class="btn btn-sm btn-outline-danger" onclick="eliminar(${m.id})">Eliminar</button></td>
+    </tr>`).join('');
+}
+render();
+
+function eliminar(id) {
+  if (confirm('¿Eliminar este movimiento?')) {
+    movimientos = movimientos.filter(m => m.id !== id);
+    save();
+  }
+}
+
+// ---------- ENVIAR DATOS A SHEETS ----------
+function sendToSheets(payload) {
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(r => r.json())
+  .then(() => console.log('✅ Guardado en Sheets'))
+  .catch(err => console.error('❌ Error al guardar en Sheets', err));
+}
+
+// ---------- FORMULARIOS ----------
+document.getElementById('formEntrada').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  addMov({
+    tipoMov: 'ENTRADA',
+    tipo: fd.get('tipo'),
+    modelo: fd.get('modelo'),
+    serie: fd.get('serie'),
+    tecnicoEntrada: fd.get('tecnicoEntrada'),
+    fechaHora: fd.get('fechaHoraEntrada'),
+    horaSalidaBodega: fd.get('horaSalidaBodega'),
+    motivo: fd.get('motivo') === 'Otro' ? fd.get('otroTexto') : fd.get('motivo')
+  });
+  e.target.reset();
+  document.getElementById('otroEntrada').classList.add('d-none');
+  bootstrap.Collapse.getInstance(document.getElementById('entradaCollapse')).hide();
+});
+
+document.getElementById('formSalida').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  addMov({
+    tipoMov: 'SALIDA',
+    tipo: fd.get('tipo'),
+    modelo: fd.get('modelo'),
+    serie: fd.get('serie'),
+    tecnicoSalida: fd.get('tecnicoSalida'),
+    fechaHora: fd.get('fechaHoraSalida'),
+    horaSalidaBodega: fd.get('horaSalidaBodega'),
+    idSitio: fd.get('idSitio'),
+    obsSalida: fd.get('obsSalida')
+  });
+  e.target.reset();
+  bootstrap.Collapse.getInstance(document.getElementById('salidaCollapse')).hide();
+});
+
+document.getElementById('formInventario').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  addMov({
+    tipoMov: 'INVENTARIO',
+    tecnicoEntrada: fd.get('tecnicoEntrada'),
+    fechaHora: fd.get('fechaHoraRegistro'),
+    horaSalidaBodega: fd.get('horaSalidaBodega'),
+    obsInventario: fd.get('obsInventario')
+  });
+  e.target.reset();
+  bootstrap.Collapse.getInstance(document.getElementById('inventarioCollapse')).hide();
+});
+
+// ---------- CSV / IMPORT ----------
+function exportCSV() {
+  const rows = [['Fecha/Hora', 'Movimiento', 'Tipo', 'Modelo', 'Serie', 'TecnicoEntrada', 'TecnicoSalida', 'IDSitio', 'HoraSalidaBodega', 'Motivo/Obs'],
+    ...movimientos.map(m => [m.fechaHora, m.tipoMov, m.tipo || '', m.modelo || '', m.serie || '', m.tecnicoEntrada || '', m.tecnicoSalida || '', m.idSitio || '', m.horaSalidaBodega || '', m.motivo || m.obsSalida || m.obsInventario || ''])];
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bodega_movimientos.csv';
+  a.click();
+}
+function importCSV(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const lines = reader.result.split('\n').slice(1);
+    const nuevos = lines.filter(l => l.trim()).map(l => {
+      const [f, tipoMov, tipo, modelo, serie, te, ts, idS, hsb, obs] = l.split(',');
+      return { fechaHora: f, tipoMov, tipo, modelo, serie, tecnicoEntrada: te, tecnicoSalida: ts, idSitio: idS, horaSalidaBodega: hsb, motivo: obs };
     });
+    movimientos = [...nuevos, ...movimientos];
+    save();
+  };
+  reader.readAsText(file);
+}
 
-    function setupImagePreview(inputId, imgId, previewId) {
-      const input = document.getElementById(inputId);
-      const img = document.getElementById(imgId);
-      const preview = document.getElementById(previewId);
-      input.addEventListener("change", function (e) {
-        if (e.target.files && e.target.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function (event) {
-            img.src = event.target.result;
-            img.style.display = "block";
-            preview.querySelector("i").style.display = "none";
-          };
-          reader.readAsDataURL(e.target.files[0]);
-        }
-      });
-
-      // Al hacer clic en la vista previa se abre selector de archivo
-      preview.addEventListener("click", () => input.click());
-    }
-
-    async function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    }
-
-    document.getElementById("save-to-drive").addEventListener("click", async function () {
-      const reason = document.getElementById("reason").value;
-      const tech = document.getElementById("tech-name").value.trim();
-      const entryDate = document.getElementById("entry-date").value;
-      const entryTime = document.getElementById("entry-time").value;
-      const exitTime = document.getElementById("exit-time").value;
-      const siteId = document.getElementById("site-id").value.trim();
-      const siteName = document.getElementById("site-name").value.trim();
-      const partNumber = document.getElementById("part-number").value.trim();
-      const partDesc = document.getElementById("part-description").value.trim();
-      const serial = document.getElementById("serial-number").value.trim();
-
-      if (!tech || !entryDate || !entryTime || !exitTime || !partNumber || !partDesc || !serial) {
-        alert("Por favor, complete todos los campos obligatorios.");
-        return;
-      }
-
-      const partPhotoFile = document.getElementById("part-photo").files[0];
-      const serialPhotoFile = document.getElementById("serial-photo").files[0];
-
-      let partPhotoBase64 = partPhotoFile ? await toBase64(partPhotoFile) : "";
-      let serialPhotoBase64 = serialPhotoFile ? await toBase64(serialPhotoFile) : "";
-
-      const data = {
-        reason,
-        tech,
-        entryDate,
-        entryTime,
-        exitTime,
-        siteId,
-        siteName,
-        partNumber,
-        partDesc,
-        serial,
-        fotoRepuesto: partPhotoBase64,
-        fotoSerie: serialPhotoBase64,
-      };
-
-      // Pega aquí la URL del Web App que obtuviste al publicar el Apps Script:
-       const url = "https://script.google.com/macros/s/AKfycbz0QOdktC2FzwLCXIF_LnH_mTOk79Qy1pF5qh-wWqTLk0kB2aKBN3AeGEGA8CCE-_rF/exec";
-
-
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const result = await response.json();
-
-        if (result.status === "ok") {
-          alert("✅ Registro guardado correctamente en Google Sheets y Drive.");
-          // Reiniciar formulario
-          document.getElementById("inventory-form").reset();
-
-          const now = new Date();
-          document.getElementById("entry-date").value = now.toISOString().substring(0, 10);
-          document.getElementById("entry-time").value = now.toTimeString().substring(0, 5);
-          document.getElementById("exit-time").value = now.toTimeString().substring(0, 5);
-
-          // Ocultar fotos previas
-          document.querySelectorAll(".photo-preview img").forEach((img) => (img.style.display = "none"));
-          document.querySelectorAll(".photo-preview i").forEach((icon) => (icon.style.display = "block"));
-          // Reset sitio si motivo es retiro
-          if (document.getElementById("reason").value !== "Retiro de equipo") {
-            document.getElementById("site-id").value = "N/A";
-            document.getElementById("site-name").value = "N/A";
-          }
-        } else {
-          alert("❌ Error al guardar: " + result.message);
-        }
-      } catch (error) {
-        alert("⚠️ Error de conexión: " + error);
-      }
-    });
-  </script>
+// ---------- MOSTRAR CAMPO OTRO ----------
+document.querySelector('select[name="motivo"]').addEventListener('change', e => {
+  document.getElementById('otroEntrada').classList.toggle('d-none', e.target.value !== 'Otro');
+});
+</script>
 </body>
 </html>
+
