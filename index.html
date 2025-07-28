@@ -149,10 +149,8 @@ const SHEETS_URL = "https://corsproxy.io/?https://script.google.com/macros/s/AKf
 
 // ---------- CRUD LOCAL + SHEETS ----------
 const LS_KEY = 'bodegaMovs';
-let movimientos = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
 
 function save() {
-  localStorage.setItem(LS_KEY, JSON.stringify(movimientos));
   render();
 }
 function addMov(mov) {
@@ -297,8 +295,7 @@ function importCSV(ev) {
 // ---------- MOSTRAR CAMPO OTRO ----------
 document.querySelector('select[name="motivo"]').addEventListener('change', e => {
   document.getElementById('otroEntrada').classList.toggle('d-none', e.target.value !== 'Otro');
-});
-</script>
+});</script>
 <script>
 function guardarComoPDF() {
   const elemento = document.querySelector('.container');
