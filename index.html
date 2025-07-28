@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Enviar datos con proxy gratuito</title>
+  <meta charset="UTF-8" />
+  <title>Control de Bodega</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-  <h3>Formulario de prueba</h3>
-  <input type="text" id="nombre" placeholder="Nombre del técnico"><br><br>
-  <button onclick="enviarDatos()">Enviar</button>
+  <h2>Formulario de Control de Bodega</h2>
+
+  <form id="formulario">
+    <label>Técnico:</label><br>
+    <input type="text" name="tecnico" required><br><br>
+
+    <label>Motivo:</label><br>
+    <input type="text" name="motivo" required><br><br>
+
+    <label>Repuesto:</label><br>
+    <input type="text" name="repuesto"><br><br>
+
+    <label>Serie:</label><br>
+    <input type="text" name="serie"><br><br>
+
+    <label>Foto Repuesto:</label><br>
+    <input type="file" name="foto_parte" accept="image/*"><br><br>
+
+    <label>Foto Serie:</label><br>
+    <input type="file" name="foto_serie" accept="image/*"><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
 
   <script>
-    async function enviarDatos() {
-      const nombre = document.getElementById('nombre').value;
+    document.getElementById("formulario").addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-      const datos = {
-        tecnico: nombre,
-        tipo_mov: "Entrada",
-        motivo: "Prueba desde proxy",
-        repuesto: "RepuestoX",
-        serie: "12345"
+      const form = e.target;
+      const tecnico = form.tecnico.value;
+      const motivo = form.motivo.value;
+      const repuesto = form.repuesto.value;
+      const serie = form.serie.value;
+
+      const leerImagenBase64 = (archivoInput) => {
+        return new Promise((resolve) => {
+          const archivo = archivoInput.files[0];
+          if (!archivo) return resolve("");
+          const lector = new FileReader();
+          lector.onloadend = () => resolve(lector.result.split(",")[1]);
+          lector.readAsDataURL(archivo);
+        });
       };
 
-      const originalUrl = "https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec";
-      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(originalUrl);
+      const foto_parte = await leerImagenBase64(form.foto_parte);
+      const foto_serie = await leerImagenBase64(form.foto_serie);
+
+      const datos = {
+        tecnico,
+        motivo,
+        repuesto,
+        serie,
+        foto_parte,
+        foto_serie
+      };
+
+      const originalURL = "https://script.google.com/macros/s/AKfycbzWInYPLtjrKf8Jfaey09DODsHfmpKnfG6khN5RKDoP76mSdF40j5okYSid-JIamS5v/exec";
+      const proxyURL = "https://corsproxy.io/?" + encodeURIComponent(originalURL);
 
       try {
-        const respuesta = await fetch(proxyUrl, {
+        const res = await fetch(proxyURL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -33,13 +74,14 @@
           body: JSON.stringify(datos)
         });
 
-        const json = await respuesta.json();
-        alert("Respuesta del servidor: " + json.message || "Enviado correctamente");
-      } catch (error) {
-        console.error("Error al enviar:", error);
-        alert("Error al enviar los datos");
+        const json = await res.json();
+        alert("✅ Enviado correctamente: " + (json.message || "OK"));
+        form.reset();
+      } catch (err) {
+        console.error("❌ Error al enviar:", err);
+        alert("Error al enviar los datos. Revisa la consola.");
       }
-    }
+    });
   </script>
 </body>
 </html>
