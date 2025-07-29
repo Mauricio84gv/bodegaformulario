@@ -381,7 +381,7 @@
     }
 
     document.getElementById("save-to-drive").addEventListener("click", async function () {
-      document.getElementById("loader-overlay").style.display = "flex"; // <- Mostrar loader
+     
 
       const reason = document.getElementById("reason").value;
       const tech = document.getElementById("tech-name").value.trim();
@@ -398,6 +398,8 @@
         alert("Por favor, complete todos los campos obligatorios.");
         return;
       }
+      // ✅ Si todo está bien, ahora sí mostramos la animación
+  document.getElementById("loader-overlay").style.display = "flex";
 
       const partPhotoFile = document.getElementById("part-photo").files[0];
       const serialPhotoFile = document.getElementById("serial-photo").files[0];
