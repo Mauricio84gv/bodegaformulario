@@ -460,14 +460,14 @@
           alert("❌ Error al guardar: " + result.message);
         }
       } catch (error) {
-        document.getElementById("loader-overlay").style.display = "none";
-
         alert("⚠️ Error de conexión: " + error);
+        //ACULTAR ANIMACION
+        document.getElementById("loader-overlay").style.display = "none";
       }
     });
   </script>
 </body>
-  //AMINACION
+   
   <div id="loader-overlay">
   <div class="loader"></div>
 </div>
