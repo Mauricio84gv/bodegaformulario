@@ -1,152 +1,433 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulario de Bodega</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro de Bodega - Sistema de Control</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
     body {
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
     }
-    .photo-preview {
-      border: 2px dashed #ccc;
-      padding: 10px;
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      background: rgba(0, 30, 60, 0.85);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       text-align: center;
-      cursor: pointer;
-      position: relative;
+      border-bottom: 5px solid #ffcc00;
     }
-    .photo-preview img {
-      max-width: 100px;
-      display: none;
-    }
-    .photo-preview i {
-      font-size: 24px;
-    }
-    #loading-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 9999;
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      font-family: 'Segoe UI', sans-serif;
+      gap: 15px;
     }
-    #loading-overlay div.spinner {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #ffcc00;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
+    header h1 i {
+      color: #ffcc00;
+    }
+    .form-section {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      color: #1a2a6c;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ffcc00;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-group {
       margin-bottom: 20px;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1a2a6c;
+    }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #f8f9fa;
+      transition: all 0.3s;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #1a2a6c;
+      box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.2);
+      background: white;
+    }
+    .date-time-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .photo-upload {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .photo-item {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+    }
+    .photo-preview {
+      width: 100%;
+      height: 180px;
+      background: #f8f9fa;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .photo-preview:hover {
+      border-color: #1a2a6c;
+      background: #eef2f7;
+    }
+    .photo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      display: none;
+    }
+    .photo-label {
+      display: block;
+      background: #1a2a6c;
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .photo-label:hover {
+      background: #0d1a4a;
+      transform: translateY(-2px);
+    }
+    .btn-submit {
+      background: linear-gradient(to right, #1a2a6c, #b21f1f);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    footer {
+      text-align: center;
+      color: white;
+      padding: 25px;
+      margin-top: 30px;
+      font-size: 14px;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-  <h2>Formulario de Bodega</h2>
-  <form id="inventory-form">
-    <input type="text" id="tech-name" placeholder="Técnico" required><br><br>
-    <input type="date" id="entry-date" required>
-    <input type="time" id="entry-time" required>
-    <input type="time" id="exit-time" required><br><br>
-    <input type="text" id="site-id" placeholder="ID Sitio"><br><br>
-    <input type="text" id="site-name" placeholder="Nombre Sitio"><br><br>
-    <input type="text" id="part-number" placeholder="Número de parte" required><br><br>
-    <input type="text" id="part-description" placeholder="Descripción de parte" required><br><br>
-    <input type="text" id="serial-number" placeholder="Serial" required><br><br>
-    <select id="reason">
-      <option value="Intercambio">Intercambio</option>
-      <option value="Reparación">Reparación</option>
-    </select><br><br>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-warehouse"></i> Sistema de Registro de Bodega</h1>
+      <p>Control de entrada y salida de repuestos técnicos</p>
+    </header>
 
-    <!-- Imagen repuesto -->
-    <label for="part-photo" class="photo-preview">
-      <i class="icon">📷 Foto Repuesto</i>
-      <img id="part-photo-preview"/>
-    </label>
-    <input type="file" id="part-photo" accept="image/*" style="display: none;"><br><br>
+    <section class="form-section">
+      <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Nuevo Registro</h2>
+      <form id="inventory-form">
+        <div class="form-group">
+          <label for="reason">Motivo del Ingreso</label>
+          <select id="reason" required>
+            <option value="Retiro de equipo">Retiro de equipo</option>
+            <option value="Ingresar equipo a bodega">Ingresar equipo a bodega</option>
+            <option value="Devolución de equipo no usado">Devolución de equipo no usado</option>
+          </select>
+        </div>
 
-    <!-- Imagen serial -->
-    <label for="serial-photo" class="photo-preview">
-      <i class="icon">📷 Foto Serial</i>
-      <img id="serial-photo-preview"/>
-    </label>
-    <input type="file" id="serial-photo" accept="image/*" style="display: none;"><br><br>
+        <div class="form-group">
+          <label for="tech-name">Nombre del Técnico</label>
+          <input type="text" id="tech-name" placeholder="Ingrese nombre completo del técnico" required />
+        </div>
 
-    <button id="save-to-drive" type="button">Guardar en Google Drive</button>
-  </form>
+        <div class="form-group date-time-group">
+          <div>
+            <label for="entry-date">Fecha de Ingreso</label>
+            <input type="date" id="entry-date" required />
+          </div>
+          <div>
+            <label for="entry-time">Hora de Ingreso</label>
+            <input type="time" id="entry-time" required />
+          </div>
+        </div>
 
-  <!-- Spinner -->
-  <div id="loading-overlay">
-    <div class="spinner"></div>
-    Enviando datos e imágenes...
+        <div class="form-group">
+          <label for="exit-time">Hora de Salida</label>
+          <input type="time" id="exit-time" required />
+        </div>
+
+        <div class="form-group">
+          <label for="site-id">ID del Sitio</label>
+          <input type="text" id="site-id" placeholder="Ej: ST-001" />
+        </div>
+
+        <div class="form-group">
+          <label for="site-name">Nombre del Sitio</label>
+          <input type="text" id="site-name" placeholder="Ej: Planta Principal" />
+        </div>
+
+        <div class="form-group">
+          <label for="part-number">Número de Parte</label>
+          <input type="text" id="part-number" placeholder="Ej: P-2023-001" required />
+        </div>
+
+        <div class="form-group">
+          <label for="part-description">Descripción del Repuesto</label>
+          <textarea
+            id="part-description"
+            rows="3"
+            placeholder="Describa el repuesto..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="serial-number">Número de Serie</label>
+          <input type="text" id="serial-number" placeholder="Número de serie único" required />
+        </div>
+
+        <div class="form-group">
+          <label>Fotografías</label>
+          <div class="photo-upload">
+            <div class="photo-item">
+              <div class="photo-preview" id="part-photo-preview">
+                <i class="fas fa-camera fa-3x" style="color: #ccc;"></i>
+                <img id="part-photo-img" src="" alt="Vista previa" />
+              </div>
+              <label class="photo-label" for="part-photo"
+                ><i class="fas fa-upload"></i> Foto del Repuesto</label
+              >
+              <input type="file" id="part-photo" accept="image/*" style="display: none" />
+            </div>
+            <div class="photo-item">
+              <div class="photo-preview" id="serial-photo-preview">
+                <i class="fas fa-barcode fa-3x" style="color: #ccc"></i>
+                <img id="serial-photo-img" src="" alt="Vista previa" />
+              </div>
+              <label class="photo-label" for="serial-photo"
+                ><i class="fas fa-upload"></i> Foto de la Serie</label
+              >
+              <input type="file" id="serial-photo" accept="image/*" style="display: none" />
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="save-to-drive" class="btn-submit">
+          <i class="fas fa-cloud-upload-alt"></i> Guardar en Google Drive
+        </button>
+      </form>
+    </section>
+
+    <footer>
+      <p>Sistema de Registro de Bodega &copy; 2025 | Todos los derechos reservados</p>
+    </footer>
   </div>
 
   <script>
-    // Vista previa
-    document.getElementById("part-photo").addEventListener("change", function (e) {
-      const img = document.getElementById("part-photo-preview");
-      img.src = URL.createObjectURL(e.target.files[0]);
-      img.style.display = "block";
-      this.previousElementSibling.querySelector("i").style.display = "none";
+    document.addEventListener("DOMContentLoaded", function () {
+      const now = new Date();
+      const today = now.toISOString().substring(0, 10);
+      const time = now.toTimeString().substring(0, 5);
+      document.getElementById("entry-date").value = today;
+      document.getElementById("entry-time").value = time;
+      document.getElementById("exit-time").value = time;
+
+      setupImagePreview("part-photo", "part-photo-img", "part-photo-preview");
+      setupImagePreview("serial-photo", "serial-photo-img", "serial-photo-preview");
+
+      // Al cambiar motivo, autollenar sitio con N/A si no es "Retiro"
+      document.getElementById("reason").addEventListener("change", function () {
+        const reason = this.value;
+        const siteId = document.getElementById("site-id");
+        const siteName = document.getElementById("site-name");
+        if (reason === "Retiro de equipo") {
+          siteId.value = "";
+          siteName.value = "";
+          siteId.disabled = false;
+          siteName.disabled = false;
+        } else {
+          siteId.value = "N/A";
+          siteName.value = "N/A";
+          siteId.disabled = true;
+          siteName.disabled = true;
+        }
+      });
     });
 
-    document.getElementById("serial-photo").addEventListener("change", function (e) {
-      const img = document.getElementById("serial-photo-preview");
-      img.src = URL.createObjectURL(e.target.files[0]);
-      img.style.display = "block";
-      this.previousElementSibling.querySelector("i").style.display = "none";
-    });
+    function setupImagePreview(inputId, imgId, previewId) {
+      const input = document.getElementById(inputId);
+      const img = document.getElementById(imgId);
+      const preview = document.getElementById(previewId);
+      input.addEventListener("change", function (e) {
+        if (e.target.files && e.target.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            img.src = event.target.result;
+            img.style.display = "block";
+            preview.querySelector("i").style.display = "none";
+          };
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
+
+      // Al hacer clic en la vista previa se abre selector de archivo
+      preview.addEventListener("click", () => input.click());
+    }
+
+    async function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
 
     document.getElementById("save-to-drive").addEventListener("click", async function () {
-      document.getElementById("loading-overlay").style.display = "flex";
+      const reason = document.getElementById("reason").value;
+      const tech = document.getElementById("tech-name").value.trim();
+      const entryDate = document.getElementById("entry-date").value;
+      const entryTime = document.getElementById("entry-time").value;
+      const exitTime = document.getElementById("exit-time").value;
+      const siteId = document.getElementById("site-id").value.trim();
+      const siteName = document.getElementById("site-name").value.trim();
+      const partNumber = document.getElementById("part-number").value.trim();
+      const partDesc = document.getElementById("part-description").value.trim();
+      const serial = document.getElementById("serial-number").value.trim();
 
-      const form = new FormData();
-      form.append("reason", document.getElementById("reason").value);
-      form.append("tech", document.getElementById("tech-name").value.trim());
-      form.append("entryDate", document.getElementById("entry-date").value);
-      form.append("entryTime", document.getElementById("entry-time").value);
-      form.append("exitTime", document.getElementById("exit-time").value);
-      form.append("siteId", document.getElementById("site-id").value.trim());
-      form.append("siteName", document.getElementById("site-name").value.trim());
-      form.append("partNumber", document.getElementById("part-number").value.trim());
-      form.append("partDesc", document.getElementById("part-description").value.trim());
-      form.append("serial", document.getElementById("serial-number").value.trim());
+      if (!tech || !entryDate || !entryTime || !exitTime || !partNumber || !partDesc || !serial) {
+        alert("Por favor, complete todos los campos obligatorios.");
+        return;
+      }
 
-      const partPhoto = document.getElementById("part-photo").files[0];
-      const serialPhoto = document.getElementById("serial-photo").files[0];
-      if (partPhoto) form.append("partPhoto", partPhoto);
-      if (serialPhoto) form.append("serialPhoto", serialPhoto);
+      const partPhotoFile = document.getElementById("part-photo").files[0];
+      const serialPhotoFile = document.getElementById("serial-photo").files[0];
+
+      let partPhotoBase64 = partPhotoFile ? await toBase64(partPhotoFile) : "";
+      let serialPhotoBase64 = serialPhotoFile ? await toBase64(serialPhotoFile) : "";
+
+      const data = {
+        reason,
+        tech,
+        entryDate,
+        entryTime,
+        exitTime,
+        siteId,
+        siteName,
+        partNumber,
+        partDesc,
+        serial,
+        fotoRepuesto: partPhotoBase64,
+        fotoSerie: serialPhotoBase64,
+      };
+
+      // Pega aquí la URL del Web App que obtuviste al publicar el Apps Script:
+       const url = "https://proxy-cors-yuot.onrender.com/proxy";
+
+
 
       try {
-        const response = await fetch("https://proxy-cors-yuot.onrender.com/proxy", {
+        const response = await fetch(url, {
           method: "POST",
-          body: form
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
 
-        const result = await response.text();
-        alert("✅ Registro enviado correctamente");
+        const result = await response.json();
 
-        document.getElementById("inventory-form").reset();
-        document.getElementById("part-photo-preview").style.display = "none";
-        document.getElementById("serial-photo-preview").style.display = "none";
-        document.querySelectorAll(".photo-preview i").forEach(icon => icon.style.display = "block");
+        if (result.status === "ok") {
+          alert("✅ Registro guardado correctamente en Google Sheets y Drive.");
+          // Reiniciar formulario
+          document.getElementById("inventory-form").reset();
+
+          const now = new Date();
+          document.getElementById("entry-date").value = now.toISOString().substring(0, 10);
+          document.getElementById("entry-time").value = now.toTimeString().substring(0, 5);
+          document.getElementById("exit-time").value = now.toTimeString().substring(0, 5);
+
+          // Ocultar fotos previas
+          document.querySelectorAll(".photo-preview img").forEach((img) => (img.style.display = "none"));
+          document.querySelectorAll(".photo-preview i").forEach((icon) => (icon.style.display = "block"));
+          // Reset sitio si motivo es retiro
+          if (document.getElementById("reason").value !== "Retiro de equipo") {
+            document.getElementById("site-id").value = "N/A";
+            document.getElementById("site-name").value = "N/A";
+          }
+        } else {
+          alert("❌ Error al guardar: " + result.message);
+        }
       } catch (error) {
-        alert("❌ Error al enviar: " + error.message);
-      } finally {
-        document.getElementById("loading-overlay").style.display = "none";
+        alert("⚠️ Error de conexión: " + error);
       }
     });
   </script>
