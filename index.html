@@ -281,8 +281,10 @@
         </div>
 
         <button type="button" id="save-to-drive" class="btn-submit">
-          <i class="fas fa-cloud-upload-alt"></i> Guardar en Google Drive
+          <i class="fas fa-cloud-upload-alt"></i> Guardar Datos
         </button>
+        <p id="loading-message" style="display: none; color: blue; font-weight: bold;"></p>
+
       </form>
     </section>
 
@@ -292,56 +294,49 @@
   </div>
 
 <script>
-  document.getElementById("save-to-drive").addEventListener("click", async function () {
-    const reason = document.getElementById("reason").value;
-    const tech = document.getElementById("tech-name").value.trim();
-    const entryDate = document.getElementById("entry-date").value;
-    const entryTime = document.getElementById("entry-time").value;
-    const exitTime = document.getElementById("exit-time").value;
-    const siteId = document.getElementById("site-id").value.trim();
-    const siteName = document.getElementById("site-name").value.trim();
-    const partNumber = document.getElementById("part-number").value.trim();
-    const partDesc = document.getElementById("part-description").value.trim();
-    const serial = document.getElementById("serial-number").value.trim();
-    const partPhoto = document.getElementById("part-photo").files[0];
-    const serialPhoto = document.getElementById("serial-photo").files[0];
+ document.getElementById("save-to-drive").addEventListener("click", async function () {
+  const loadingMessage = document.getElementById("loading-message");
+  loadingMessage.textContent = "🔄 Enviando datos e imágenes...";
+  loadingMessage.style.display = "block";
 
-    if (!tech || !entryDate || !entryTime || !exitTime || !partNumber || !partDesc || !serial) {
-      alert("Por favor, complete todos los campos obligatorios.");
-      return;
-    }
+  const form = new FormData();
+  form.append("reason", document.getElementById("reason").value);
+  form.append("tech", document.getElementById("tech-name").value.trim());
+  form.append("entryDate", document.getElementById("entry-date").value);
+  form.append("entryTime", document.getElementById("entry-time").value);
+  form.append("exitTime", document.getElementById("exit-time").value);
+  form.append("siteId", document.getElementById("site-id").value.trim());
+  form.append("siteName", document.getElementById("site-name").value.trim());
+  form.append("partNumber", document.getElementById("part-number").value.trim());
+  form.append("partDesc", document.getElementById("part-description").value.trim());
+  form.append("serial", document.getElementById("serial-number").value.trim());
 
-    const form = new FormData();
-    form.append("reason", reason);
-    form.append("tech", tech);
-    form.append("entryDate", entryDate);
-    form.append("entryTime", entryTime);
-    form.append("exitTime", exitTime);
-    form.append("siteId", siteId);
-    form.append("siteName", siteName);
-    form.append("partNumber", partNumber);
-    form.append("partDesc", partDesc);
-    form.append("serial", serial);
-    if (partPhoto) form.append("partPhoto", partPhoto);
-    if (serialPhoto) form.append("serialPhoto", serialPhoto);
+  const partPhoto = document.getElementById("part-photo").files[0];
+  const serialPhoto = document.getElementById("serial-photo").files[0];
+  if (partPhoto) form.append("partPhoto", partPhoto);
+  if (serialPhoto) form.append("serialPhoto", serialPhoto);
 
-    try {
-      const response = await fetch("https://proxy-cors-yuot.onrender.com/proxy", {
-        method: "POST",
-        body: form
-      });
+  try {
+    const response = await fetch("https://proxy-cors-yuot.onrender.com/proxy", {
+      method: "POST",
+      body: form,
+    });
 
-      const result = await response.text();
-      alert("✅ Registro enviado correctamente");
+    const result = await response.text();
+    loadingMessage.textContent = "✅ Registro enviado correctamente";
+    document.getElementById("inventory-form").reset();
 
-      // Opcional: resetear formulario
-      document.getElementById("inventory-form").reset();
-      document.querySelectorAll(".photo-preview img").forEach(img => img.style.display = "none");
-      document.querySelectorAll(".photo-preview i").forEach(icon => icon.style.display = "block");
-    } catch (error) {
-      alert("❌ Error al enviar: " + error.message);
-    }
-  });
+    document.querySelectorAll(".photo-preview img").forEach(img => img.style.display = "none");
+    document.querySelectorAll(".photo-preview i").forEach(icon => icon.style.display = "block");
+  } catch (error) {
+    loadingMessage.textContent = "❌ Error al enviar: " + error.message;
+  }
+
+  // Oculta el mensaje luego de 5 segundos
+  setTimeout(() => {
+    loadingMessage.style.display = "none";
+  }, 5000);
+});
 </script>
 
 </body>
