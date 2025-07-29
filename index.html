@@ -463,9 +463,13 @@
           alert("❌ Error al guardar: " + result.message);
         }
       } catch (error) {
-        alert("⚠️ Error de conexión: " + error);
-        //ACULTAR ANIMACION
-        document.getElementById("loader-overlay").style.display = "none";
+        //OCULTARA ANIMCAION  
+      document.getElementById("loader-overlay").style.display = "none";
+setTimeout(() => {
+  alert("❌ Error al guardar: " + result.message);
+}, 100);
+        
+     
       }
     });
   </script>
