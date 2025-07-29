@@ -437,9 +437,11 @@
         const result = await response.json();
 
         if (result.status === "ok") {
-          document.getElementById("loader-overlay").style.display = "none";
+          
 
           alert("✅ Registro guardado correctamente en Google Sheets y Drive.");
+          //ACULTAR ANIMACION
+          document.getElementById("loader-overlay").style.display = "none";
           // Reiniciar formulario
           document.getElementById("inventory-form").reset();
 
