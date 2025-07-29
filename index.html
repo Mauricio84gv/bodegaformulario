@@ -294,50 +294,69 @@
   </div>
 
 <script>
- document.getElementById("save-to-drive").addEventListener("click", async function () {
-  const loadingMessage = document.getElementById("loading-message");
-  loadingMessage.textContent = "🔄 Enviando datos e imágenes...";
-  loadingMessage.style.display = "block";
+  // Cargar preview al seleccionar archivo
+  document.getElementById("part-photo").addEventListener("change", function (e) {
+    const img = document.getElementById("part-photo-preview");
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.style.display = "block";
+    this.previousElementSibling.querySelector("i").style.display = "none";
+  });
 
-  const form = new FormData();
-  form.append("reason", document.getElementById("reason").value);
-  form.append("tech", document.getElementById("tech-name").value.trim());
-  form.append("entryDate", document.getElementById("entry-date").value);
-  form.append("entryTime", document.getElementById("entry-time").value);
-  form.append("exitTime", document.getElementById("exit-time").value);
-  form.append("siteId", document.getElementById("site-id").value.trim());
-  form.append("siteName", document.getElementById("site-name").value.trim());
-  form.append("partNumber", document.getElementById("part-number").value.trim());
-  form.append("partDesc", document.getElementById("part-description").value.trim());
-  form.append("serial", document.getElementById("serial-number").value.trim());
+  document.getElementById("serial-photo").addEventListener("change", function (e) {
+    const img = document.getElementById("serial-photo-preview");
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.style.display = "block";
+    this.previousElementSibling.querySelector("i").style.display = "none";
+  });
 
-  const partPhoto = document.getElementById("part-photo").files[0];
-  const serialPhoto = document.getElementById("serial-photo").files[0];
-  if (partPhoto) form.append("partPhoto", partPhoto);
-  if (serialPhoto) form.append("serialPhoto", serialPhoto);
+  // Envío del formulario
+  document.getElementById("save-to-drive").addEventListener("click", async function () {
+    const loadingMessage = document.getElementById("loading-message");
+    loadingMessage.textContent = "🔄 Enviando datos e imágenes...";
+    loadingMessage.style.display = "block";
 
-  try {
-    const response = await fetch("https://proxy-cors-yuot.onrender.com/proxy", {
-      method: "POST",
-      body: form,
-    });
+    const form = new FormData();
+    form.append("reason", document.getElementById("reason").value);
+    form.append("tech", document.getElementById("tech-name").value.trim());
+    form.append("entryDate", document.getElementById("entry-date").value);
+    form.append("entryTime", document.getElementById("entry-time").value);
+    form.append("exitTime", document.getElementById("exit-time").value);
+    form.append("siteId", document.getElementById("site-id").value.trim());
+    form.append("siteName", document.getElementById("site-name").value.trim());
+    form.append("partNumber", document.getElementById("part-number").value.trim());
+    form.append("partDesc", document.getElementById("part-description").value.trim());
+    form.append("serial", document.getElementById("serial-number").value.trim());
 
-    const result = await response.text();
-    loadingMessage.textContent = "✅ Registro enviado correctamente";
-    document.getElementById("inventory-form").reset();
+    const partPhoto = document.getElementById("part-photo").files[0];
+    const serialPhoto = document.getElementById("serial-photo").files[0];
+    if (partPhoto) form.append("partPhoto", partPhoto);
+    if (serialPhoto) form.append("serialPhoto", serialPhoto);
 
-    document.querySelectorAll(".photo-preview img").forEach(img => img.style.display = "none");
-    document.querySelectorAll(".photo-preview i").forEach(icon => icon.style.display = "block");
-  } catch (error) {
-    loadingMessage.textContent = "❌ Error al enviar: " + error.message;
-  }
+    try {
+      const response = await fetch("https://proxy-cors-yuot.onrender.com/proxy", {
+        method: "POST",
+        body: form
+      });
 
-  // Oculta el mensaje luego de 5 segundos
-  setTimeout(() => {
-    loadingMessage.style.display = "none";
-  }, 5000);
-});
+      const result = await response.text();
+      loadingMessage.textContent = "✅ Registro enviado correctamente";
+
+      // Reset formulario y previews
+      document.getElementById("inventory-form").reset();
+      document.getElementById("part-photo-preview").style.display = "none";
+      document.getElementById("serial-photo-preview").style.display = "none";
+      document.querySelectorAll(".photo-preview i").forEach(icon => icon.style.display = "block");
+    } catch (error) {
+      loadingMessage.textContent = "❌ Error al enviar: " + error.message;
+    }
+
+    // Ocultar mensaje después de 5 segundos
+    setTimeout(() => {
+      loadingMessage.style.display = "none";
+    }, 5000);
+  });
 </script>
+
 
 </body>
 </html>
